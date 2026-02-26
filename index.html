@@ -58,8 +58,8 @@
 </head>
 <body class="w-full h-screen flex flex-col">
 
-    <!-- Canvas Area -->
-    <main class="flex-1 overflow-hidden relative cursor-grab bg-grid" id="viewport">
+    <!-- Canvas Area: Ditambahkan touch-none untuk mencegah pull-to-refresh bawaan browser HP saat menggeser kanvas -->
+    <main class="flex-1 overflow-hidden relative cursor-grab bg-grid touch-none" id="viewport">
         
         <!-- The Wrapper that scales with content -->
         <div id="mindmap-wrapper" class="relative w-max p-16 md:p-32 flex items-center">
@@ -373,10 +373,17 @@
         window.addEventListener('load', () => {
             const viewport = document.getElementById('viewport');
             const wrapper = document.getElementById('mindmap-wrapper');
+            const isMobile = window.innerWidth < 768; // Deteksi jika dibuka dari HP
             
-            // Set agar posisinya berada di tengah vertikal & bergeser ke kanan sedikit saat pertama kali load
+            // Set agar posisinya berada di tengah vertikal
             translateY = (viewport.clientHeight - wrapper.clientHeight) / 2;
-            translateX = 100; 
+            
+            if (isMobile) {
+                scale = 0.85; // Zoom out sedikit otomatis di HP agar muat
+                translateX = (viewport.clientWidth - (320 * scale)) / 2; // Posisikan elemen kotak tepat di tengah layar HP
+            } else {
+                translateX = 100; // Bergeser ke kanan sedikit untuk tampilan desktop
+            }
             
             updateTransform();
         });
@@ -470,6 +477,75 @@
             translateX = e.clientX - startX;
             translateY = e.clientY - startY;
             updateTransform();
+        });
+
+        // --- Fitur Sentuh untuk HP (Pan & Pinch-to-Zoom) ---
+        let initialPinchDistance = null;
+        let lastScale = scale;
+
+        viewport.addEventListener('touchstart', (e) => {
+            // Abaikan aksi sentuh jika sedang menekan kartu atau tombol toggle
+            if(e.target.closest('.node-card') || e.target.closest('.toggle-btn')) return;
+            
+            if (e.touches.length === 1) {
+                // Sentuhan 1 jari: Mode Geser (Pan)
+                isDown = true;
+                startX = e.touches[0].clientX - translateX;
+                startY = e.touches[0].clientY - translateY;
+            } else if (e.touches.length === 2) {
+                // Sentuhan 2 jari: Mode Cubit (Zoom)
+                isDown = false; 
+                initialPinchDistance = Math.hypot(
+                    e.touches[0].clientX - e.touches[1].clientX,
+                    e.touches[0].clientY - e.touches[1].clientY
+                );
+                lastScale = scale;
+            }
+        }, { passive: false });
+
+        viewport.addEventListener('touchmove', (e) => {
+            if (e.touches.length === 1 && isDown) {
+                e.preventDefault(); // Cegah scroll layar bawaan browser HP
+                translateX = e.touches[0].clientX - startX;
+                translateY = e.touches[0].clientY - startY;
+                updateTransform();
+            } else if (e.touches.length === 2) {
+                e.preventDefault(); // Cegah aksi zoom layar bawaan browser HP
+                const currentPinchDistance = Math.hypot(
+                    e.touches[0].clientX - e.touches[1].clientX,
+                    e.touches[0].clientY - e.touches[1].clientY
+                );
+                
+                if (initialPinchDistance) {
+                    const minScale = 0.2;
+                    const maxScale = 3;
+                    const pinchRatio = currentPinchDistance / initialPinchDistance;
+                    let newScale = lastScale * pinchRatio;
+                    newScale = Math.max(minScale, Math.min(maxScale, newScale));
+                    
+                    // Kalkulasi agar zoom berpusat pada titik tengah antara 2 jari
+                    const midX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+                    const midY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
+                    const rect = viewport.getBoundingClientRect();
+                    const touchX = midX - rect.left;
+                    const touchY = midY - rect.top;
+
+                    translateX = touchX - ((touchX - translateX) * (newScale / scale));
+                    translateY = touchY - ((touchY - translateY) * (newScale / scale));
+                    
+                    scale = newScale;
+                    updateTransform();
+                }
+            }
+        }, { passive: false });
+
+        viewport.addEventListener('touchend', (e) => {
+            if (e.touches.length < 2) {
+                initialPinchDistance = null;
+            }
+            if (e.touches.length === 0) {
+                isDown = false;
+            }
         });
 
         // Interaksi Expand / Collapse (Tampil / Sembunyi)
