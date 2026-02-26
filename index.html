@@ -105,24 +105,75 @@
                         
                         <!-- Tasks for Branch 1 -->
                         <div class="flex flex-col gap-5 hidden" id="tasks-1">
-                            <div class="node-card p-4 w-80 border-l-2 border-l-[#444746]" id="task-1a">
-                                <div class="flex items-start gap-3">
-                                    <i class="ph ph-check-circle text-[#A8C7FA] text-lg mt-0.5"></i>
-                                    <div>
-                                        <h4 class="font-medium text-sm text-gray-100 mb-1">1.a Verifikasi Surat Keluar</h4>
-                                        <p class="text-xs text-muted leading-relaxed">Sama dengan proses pemberian paraf pada metode surat manual sebelum ditandatangani.</p>
+                            
+                            <!-- Task 1.a + Sub-node Video -->
+                            <div class="flex flex-row items-center gap-12 md:gap-16">
+                                <div class="relative">
+                                    <div class="node-card p-4 w-80 border-l-2 border-l-[#444746]" id="task-1a">
+                                        <div class="flex items-start gap-3">
+                                            <i class="ph ph-check-circle text-[#A8C7FA] text-lg mt-0.5"></i>
+                                            <div>
+                                                <h4 class="font-medium text-sm text-gray-100 mb-1">1.a Verifikasi Surat Keluar</h4>
+                                                <p class="text-xs text-muted leading-relaxed">Sama dengan proses pemberian paraf pada metode surat manual sebelum ditandatangani.</p>
+                                            </div>
+                                        </div>
                                     </div>
+                                    <!-- Tombol Toggle Task 1a -->
+                                    <button class="toggle-btn absolute -right-3 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-[#2D2E30] border border-[#131314] hover:bg-red-500 hover:text-white text-[#C4C7C5] flex items-center justify-center z-20 cursor-pointer shadow-md transition-all duration-200" data-target="vids-1a">
+                                        <i class="ph-bold ph-plus text-[10px] transition-transform duration-200"></i>
+                                    </button>
+                                </div>
+                                <!-- Video 1a (YouTube Short) -->
+                                <div class="flex flex-col justify-center hidden" id="vids-1a">
+                                    <a href="https://youtube.com/shorts/69kyzk2V6TE?si=wTmUIgY4vrh3O3Uk" target="_blank" rel="noopener noreferrer" class="node-card block p-2 w-36 border-l-2 border-l-red-500 hover:border-red-400 cursor-pointer" id="vid-1a">
+                                        <div class="relative w-full aspect-[9/16] max-h-32 object-cover rounded bg-black overflow-hidden group">
+                                            <img src="https://img.youtube.com/vi/69kyzk2V6TE/hqdefault.jpg" alt="Video Verifikasi" class="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity">
+                                            <div class="absolute inset-0 flex items-center justify-center">
+                                                <i class="ph-fill ph-play-circle text-3xl text-white opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all drop-shadow-md"></i>
+                                            </div>
+                                        </div>
+                                        <div class="mt-2 flex items-center gap-1 justify-center text-[#C4C7C5] group-hover:text-white transition-colors">
+                                            <i class="ph-fill ph-youtube-logo text-red-500"></i>
+                                            <span class="text-[10px] font-medium truncate">Tonton Video</span>
+                                        </div>
+                                    </a>
                                 </div>
                             </div>
-                            <div class="node-card p-4 w-80 border-l-2 border-l-[#444746]" id="task-1b">
-                                <div class="flex items-start gap-3">
-                                    <i class="ph ph-share-network text-[#A8C7FA] text-lg mt-0.5"></i>
-                                    <div>
-                                        <h4 class="font-medium text-sm text-gray-100 mb-1">1.b Disposisi</h4>
-                                        <p class="text-xs text-muted leading-relaxed">Mendisposisikan ke bawahan setelah menerima disposisi dari atasan, atau berkoordinasi dengan pejabat setara.</p>
+
+                            <!-- Task 1.b + Sub-node Video -->
+                            <div class="flex flex-row items-center gap-12 md:gap-16">
+                                <div class="relative">
+                                    <div class="node-card p-4 w-80 border-l-2 border-l-[#444746]" id="task-1b">
+                                        <div class="flex items-start gap-3">
+                                            <i class="ph ph-share-network text-[#A8C7FA] text-lg mt-0.5"></i>
+                                            <div>
+                                                <h4 class="font-medium text-sm text-gray-100 mb-1">1.b Disposisi</h4>
+                                                <p class="text-xs text-muted leading-relaxed">Mendisposisikan ke bawahan setelah menerima disposisi dari atasan, atau berkoordinasi dengan pejabat setara.</p>
+                                            </div>
+                                        </div>
                                     </div>
+                                    <!-- Tombol Toggle Task 1b -->
+                                    <button class="toggle-btn absolute -right-3 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-[#2D2E30] border border-[#131314] hover:bg-red-500 hover:text-white text-[#C4C7C5] flex items-center justify-center z-20 cursor-pointer shadow-md transition-all duration-200" data-target="vids-1b">
+                                        <i class="ph-bold ph-plus text-[10px] transition-transform duration-200"></i>
+                                    </button>
+                                </div>
+                                <!-- Video 1b (Standard YouTube) -->
+                                <div class="flex flex-col justify-center hidden" id="vids-1b">
+                                    <a href="https://youtu.be/mfIHburqdNg" target="_blank" rel="noopener noreferrer" class="node-card block p-2 w-48 border-l-2 border-l-red-500 hover:border-red-400 cursor-pointer" id="vid-1b">
+                                        <div class="relative w-full aspect-video rounded bg-black overflow-hidden group">
+                                            <img src="https://img.youtube.com/vi/mfIHburqdNg/hqdefault.jpg" alt="Video Disposisi" class="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity">
+                                            <div class="absolute inset-0 flex items-center justify-center">
+                                                <i class="ph-fill ph-play-circle text-3xl text-white opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all drop-shadow-md"></i>
+                                            </div>
+                                        </div>
+                                        <div class="mt-2 flex items-center gap-1 justify-center text-[#C4C7C5] group-hover:text-white transition-colors">
+                                            <i class="ph-fill ph-youtube-logo text-red-500"></i>
+                                            <span class="text-[10px] font-medium truncate">Tonton Video</span>
+                                        </div>
+                                    </a>
                                 </div>
                             </div>
+
                         </div>
                     </div>
 
@@ -241,6 +292,10 @@
             
             { from: 'role-4', to: 'task-4a', baseColor: '#444746', hoverColor: '#F2B8B5' },
             { from: 'role-4', to: 'task-4b', baseColor: '#444746', hoverColor: '#F2B8B5' },
+
+            // YouTube Video Connections
+            { from: 'task-1a', to: 'vid-1a', baseColor: '#444746', hoverColor: '#ef4444' },
+            { from: 'task-1b', to: 'vid-1b', baseColor: '#444746', hoverColor: '#ef4444' },
         ];
 
         let scale = 1;
