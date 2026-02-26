@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mindmap Tutorial SRIKANDI - Style NotebookLM</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Phosphor Icons (Sleek modern icons similar to Google Material) -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- Google Fonts (Inter) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #131314; /* Google Dark Background */
+            color: #E3E3E3;
+            overflow: hidden; /* Prevent body scroll, handle scroll in canvas */
+        }
+
+        /* Canvas Background pattern mimicking NotebookLM */
+        .bg-grid {
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        }
+
+        /* Card Styles */
+        .node-card {
+            background: #1E1F20;
+            border: 1px solid #444746;
+            border-radius: 16px;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 10;
+        }
+        .node-card:hover {
+            border-color: #8E918F;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+        }
+
+        /* Role Card Distinct Borders */
+        .role-wadir      { border-left: 5px solid #A8C7FA; } /* Blue */
+        .role-staf       { border-left: 5px solid #6DD58C; } /* Green */
+        .role-sekretaris { border-left: 5px solid #FEE266; } /* Yellow */
+        .role-direktur   { border-left: 5px solid #F2B8B5; } /* Red */
+
+        /* Text utility */
+        .text-muted { color: #C4C7C5; }
+    </style>
+</head>
+<body class="w-full h-screen flex flex-col">
+
+    <!-- Canvas Area -->
+    <main class="flex-1 overflow-hidden relative cursor-grab bg-grid" id="viewport">
+        
+        <!-- The Wrapper that scales with content -->
+        <div id="mindmap-wrapper" class="relative w-max p-16 md:p-32 flex items-center">
+            
+            <!-- SVG Layer for Connecting Lines -->
+            <svg id="svg-layer" class="absolute top-0 left-0 w-full h-full pointer-events-none z-0"></svg>
+
+            <!-- Mindmap Flex Container -->
+            <div class="flex flex-row items-stretch gap-20 md:gap-32 w-max">
+                
+                <!-- LEVEL 0: ROOT -->
+                <div class="flex flex-col justify-center">
+                    <div class="relative">
+                        <div class="node-card p-6 w-80 shadow-lg text-center bg-gradient-to-br from-[#1E1F20] to-[#131314]" id="root">
+                            <h2 class="text-xl font-semibold text-white mb-2">SRIKANDI</h2>
+                            <p class="text-sm text-muted">Sistem Informasi Kearsipan Dinamis Terintegrasi</p>
+                        </div>
+                        <!-- Tombol Toggle Root -->
+                        <button class="toggle-btn absolute -right-4 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-[#2D2E30] border-2 border-[#131314] hover:bg-[#444746] hover:border-[#E3E3E3] text-[#C4C7C5] hover:text-white flex items-center justify-center z-20 cursor-pointer shadow-md transition-all duration-200" data-target="level-1">
+                            <i class="ph-bold ph-plus text-sm transition-transform duration-200"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- LEVEL 1 & 2: ROLES & TASKS -->
+                <div class="flex flex-col gap-12 justify-center hidden" id="level-1">
+
+                    <!-- BRANCH 1: WADIR / KABAG / KABID / JF -->
+                    <div class="flex flex-row items-center gap-16 md:gap-24">
+                        <div class="relative">
+                            <div class="node-card role-wadir p-5 w-72" id="role-1">
+                                <div class="flex items-center gap-3 mb-2">
+                                    <i class="ph-fill ph-user-gear text-[#A8C7FA] text-xl"></i>
+                                    <span class="text-xs font-bold tracking-wider text-[#A8C7FA] uppercase">Aktor 1</span>
+                                </div>
+                                <h3 class="font-medium text-lg leading-tight">Wadir / Kabag / Kabid / JF</h3>
+                            </div>
+                            <!-- Tombol Toggle Role 1 -->
+                            <button class="toggle-btn absolute -right-4 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-[#2D2E30] border-2 border-[#131314] hover:bg-[#A8C7FA] hover:text-[#131314] text-[#C4C7C5] flex items-center justify-center z-20 cursor-pointer shadow-md transition-all duration-200" data-target="tasks-1">
+                                <i class="ph-bold ph-plus text-sm transition-transform duration-200"></i>
+                            </button>
+                        </div>
+                        
+                        <!-- Tasks for Branch 1 -->
+                        <div class="flex flex-col gap-5 hidden" id="tasks-1">
+                            <div class="node-card p-4 w-80 border-l-2 border-l-[#444746]" id="task-1a">
+                                <div class="flex items-start gap-3">
+                                    <i class="ph ph-check-circle text-[#A8C7FA] text-lg mt-0.5"></i>
+                                    <div>
+                                        <h4 class="font-medium text-sm text-gray-100 mb-1">1.a Verifikasi Surat Keluar</h4>
+                                        <p class="text-xs text-muted leading-relaxed">Sama dengan proses pemberian paraf pada metode surat manual sebelum ditandatangani.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="node-card p-4 w-80 border-l-2 border-l-[#444746]" id="task-1b">
+                                <div class="flex items-start gap-3">
+                                    <i class="ph ph-share-network text-[#A8C7FA] text-lg mt-0.5"></i>
+                                    <div>
+                                        <h4 class="font-medium text-sm text-gray-100 mb-1">1.b Disposisi</h4>
+                                        <p class="text-xs text-muted leading-relaxed">Mendisposisikan ke bawahan setelah menerima disposisi dari atasan, atau berkoordinasi dengan pejabat setara.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- BRANCH 2: STAF -->
+                    <div class="flex flex-row items-center gap-16 md:gap-24">
+                        <div class="relative">
+                            <div class="node-card role-staf p-5 w-72" id="role-2">
+                                <div class="flex items-center gap-3 mb-2">
+                                    <i class="ph-fill ph-user text-[#6DD58C] text-xl"></i>
+                                    <span class="text-xs font-bold tracking-wider text-[#6DD58C] uppercase">Aktor 2</span>
+                                </div>
+                                <h3 class="font-medium text-lg leading-tight">Staf Pelaksana</h3>
+                            </div>
+                            <!-- Tombol Toggle Role 2 -->
+                            <button class="toggle-btn absolute -right-4 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-[#2D2E30] border-2 border-[#131314] hover:bg-[#6DD58C] hover:text-[#131314] text-[#C4C7C5] flex items-center justify-center z-20 cursor-pointer shadow-md transition-all duration-200" data-target="tasks-2">
+                                <i class="ph-bold ph-plus text-sm transition-transform duration-200"></i>
+                            </button>
+                        </div>
+                        
+                        <!-- Tasks for Branch 2 -->
+                        <div class="flex flex-col gap-5 hidden" id="tasks-2">
+                            <div class="node-card p-4 w-80 border-l-2 border-l-[#444746]" id="task-2a">
+                                <div class="flex items-start gap-3">
+                                    <i class="ph ph-file-arrow-up text-[#6DD58C] text-lg mt-0.5"></i>
+                                    <div>
+                                        <h4 class="font-medium text-sm text-gray-100 mb-1">2.a Membuat/Upload Draft</h4>
+                                        <p class="text-xs text-muted leading-relaxed">Membuat surat atau mengupload draft surat ke dalam sistem untuk ditandatangani oleh Direktur.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="node-card p-4 w-80 border-l-2 border-l-[#444746]" id="task-2b">
+                                <div class="flex items-start gap-3">
+                                    <i class="ph ph-list-checks text-[#6DD58C] text-lg mt-0.5"></i>
+                                    <div>
+                                        <h4 class="font-medium text-sm text-gray-100 mb-1">2.b Tindak Lanjut Disposisi</h4>
+                                        <p class="text-xs text-muted leading-relaxed">Menerima notifikasi disposisi tugas dari atasan dan menyelesaikan pekerjaan tersebut.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- BRANCH 3: SEKRETARIS / TATA USAHA -->
+                    <div class="flex flex-row items-center gap-16 md:gap-24">
+                        <div class="relative">
+                            <div class="node-card role-sekretaris p-5 w-72" id="role-3">
+                                <div class="flex items-center gap-3 mb-2">
+                                    <i class="ph-fill ph-users-three text-[#FEE266] text-xl"></i>
+                                    <span class="text-xs font-bold tracking-wider text-[#FEE266] uppercase">Aktor 3</span>
+                                </div>
+                                <h3 class="font-medium text-lg leading-tight">Sekretaris Srikandi / Tata Usaha</h3>
+                                <p class="text-xs text-muted mt-3 pt-3 border-t border-[#444746]">Mengelola administrasi dan pendistribusian surat secara sistem.</p>
+                            </div>
+                        </div>
+                        <!-- Empty column structure to maintain flex alignment -->
+                        <div class="flex flex-col gap-5 w-80 opacity-0 pointer-events-none hidden md:block" id="task-3-placeholder"></div>
+                    </div>
+
+                    <!-- BRANCH 4: DIREKTUR -->
+                    <div class="flex flex-row items-center gap-16 md:gap-24">
+                        <div class="relative">
+                            <div class="node-card role-direktur p-5 w-72" id="role-4">
+                                <div class="flex items-center gap-3 mb-2">
+                                    <i class="ph-fill ph-user-circle-gear text-[#F2B8B5] text-xl"></i>
+                                    <span class="text-xs font-bold tracking-wider text-[#F2B8B5] uppercase">Aktor 4</span>
+                                </div>
+                                <h3 class="font-medium text-lg leading-tight">Direktur</h3>
+                            </div>
+                            <!-- Tombol Toggle Role 4 -->
+                            <button class="toggle-btn absolute -right-4 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-[#2D2E30] border-2 border-[#131314] hover:bg-[#F2B8B5] hover:text-[#131314] text-[#C4C7C5] flex items-center justify-center z-20 cursor-pointer shadow-md transition-all duration-200" data-target="tasks-4">
+                                <i class="ph-bold ph-plus text-sm transition-transform duration-200"></i>
+                            </button>
+                        </div>
+                        
+                        <!-- Tasks for Branch 4 -->
+                        <div class="flex flex-col gap-5 hidden" id="tasks-4">
+                            <div class="node-card p-4 w-80 border-l-2 border-l-[#444746]" id="task-4a">
+                                <div class="flex items-start gap-3">
+                                    <i class="ph ph-pen-nib text-[#F2B8B5] text-lg mt-0.5"></i>
+                                    <div>
+                                        <h4 class="font-medium text-sm text-gray-100 mb-1">4.1 Menandatangani Surat</h4>
+                                        <p class="text-xs text-muted leading-relaxed">Melakukan penandatanganan elektronik pada surat keluar yang telah diverifikasi.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="node-card p-4 w-80 border-l-2 border-l-[#444746]" id="task-4b">
+                                <div class="flex items-start gap-3">
+                                    <i class="ph ph-envelope-open text-[#F2B8B5] text-lg mt-0.5"></i>
+                                    <div>
+                                        <h4 class="font-medium text-sm text-gray-100 mb-1">4.2 Disposisi Surat Masuk</h4>
+                                        <p class="text-xs text-muted leading-relaxed">Menerima surat masuk dari eksternal dan mendisposisikan ke unit/pejabat di bawahnya.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Mindmap Connection Logic
+        const connections = [
+            { from: 'root', to: 'role-1', baseColor: '#444746', hoverColor: '#A8C7FA' },
+            { from: 'root', to: 'role-2', baseColor: '#444746', hoverColor: '#6DD58C' },
+            { from: 'root', to: 'role-3', baseColor: '#444746', hoverColor: '#FEE266' },
+            { from: 'root', to: 'role-4', baseColor: '#444746', hoverColor: '#F2B8B5' },
+            
+            { from: 'role-1', to: 'task-1a', baseColor: '#444746', hoverColor: '#A8C7FA' },
+            { from: 'role-1', to: 'task-1b', baseColor: '#444746', hoverColor: '#A8C7FA' },
+            
+            { from: 'role-2', to: 'task-2a', baseColor: '#444746', hoverColor: '#6DD58C' },
+            { from: 'role-2', to: 'task-2b', baseColor: '#444746', hoverColor: '#6DD58C' },
+            
+            { from: 'role-4', to: 'task-4a', baseColor: '#444746', hoverColor: '#F2B8B5' },
+            { from: 'role-4', to: 'task-4b', baseColor: '#444746', hoverColor: '#F2B8B5' },
+        ];
+
+        let scale = 1;
+        let translateX = 0;
+        let translateY = 0;
+
+        function updateTransform() {
+            const wrapper = document.getElementById('mindmap-wrapper');
+            const viewport = document.getElementById('viewport');
+            
+            wrapper.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+            wrapper.style.transformOrigin = '0 0';
+            
+            // Pan and scale the grid background for infinite canvas feel
+            viewport.style.backgroundPosition = `${translateX}px ${translateY}px`;
+            viewport.style.backgroundSize = `${32 * scale}px ${32 * scale}px`;
+            
+            requestAnimationFrame(drawLines);
+        }
+
+        function drawLines() {
+            const svg = document.getElementById('svg-layer');
+            const wrapper = document.getElementById('mindmap-wrapper');
+            const wrapperRect = wrapper.getBoundingClientRect();
+            
+            // Clear existing lines
+            svg.innerHTML = '';
+            
+            // Sync SVG dimensions
+            svg.style.width = wrapper.scrollWidth + 'px';
+            svg.style.height = wrapper.scrollHeight + 'px';
+
+            connections.forEach(conn => {
+                const fromEl = document.getElementById(conn.from);
+                const toEl = document.getElementById(conn.to);
+                
+                if (!fromEl || !toEl) return;
+
+                // Jangan gambar garis jika elemen saat ini sedang disembunyikan (hidden)
+                if (fromEl.offsetParent === null || toEl.offsetParent === null) return;
+
+                const fromRect = fromEl.getBoundingClientRect();
+                const toRect = toEl.getBoundingClientRect();
+
+                // Hitung posisi relatif terhadap pembungkus (wrapper) dan disesuaikan dengan skala zoom saat ini
+                const startX = (fromRect.right - wrapperRect.left) / scale;
+                const startY = (fromRect.top + (fromRect.height / 2) - wrapperRect.top) / scale;
+                
+                const endX = (toRect.left - wrapperRect.left) / scale;
+                const endY = (toRect.top + (toRect.height / 2) - wrapperRect.top) / scale;
+
+                // Bezier curve calculations for smooth "S" shape
+                const offset = Math.max(50, (endX - startX) / 2);
+                const cp1X = startX + offset;
+                const cp1Y = startY;
+                const cp2X = endX - offset;
+                const cp2Y = endY;
+
+                // Create SVG Path element
+                const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                const d = `M ${startX} ${startY} C ${cp1X} ${cp1Y}, ${cp2X} ${cp2Y}, ${endX} ${endY}`;
+                
+                path.setAttribute('d', d);
+                path.setAttribute('stroke', conn.baseColor);
+                path.setAttribute('stroke-width', '2');
+                path.setAttribute('fill', 'none');
+                path.setAttribute('class', 'transition-all duration-300 ease-in-out');
+                path.setAttribute('id', `line-${conn.from}-${conn.to}`);
+
+                svg.appendChild(path);
+            });
+        }
+
+        // Initialize position on load
+        window.addEventListener('load', () => {
+            const viewport = document.getElementById('viewport');
+            const wrapper = document.getElementById('mindmap-wrapper');
+            
+            // Set agar posisinya berada di tengah vertikal & bergeser ke kanan sedikit saat pertama kali load
+            translateY = (viewport.clientHeight - wrapper.clientHeight) / 2;
+            translateX = 100; 
+            
+            updateTransform();
+        });
+
+        window.addEventListener('resize', updateTransform);
+
+        // Hover Effect Logic: Light up connections when hovering over a card
+        document.querySelectorAll('.node-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                const id = card.id;
+                connections.forEach(conn => {
+                    if (conn.from === id || conn.to === id) {
+                        const line = document.getElementById(`line-${conn.from}-${conn.to}`);
+                        if (line) {
+                            line.setAttribute('stroke', conn.hoverColor);
+                            line.setAttribute('stroke-width', '4');
+                        }
+                    }
+                });
+            });
+
+            card.addEventListener('mouseleave', () => {
+                const id = card.id;
+                connections.forEach(conn => {
+                    if (conn.from === id || conn.to === id) {
+                        const line = document.getElementById(`line-${conn.from}-${conn.to}`);
+                        if (line) {
+                            line.setAttribute('stroke', conn.baseColor);
+                            line.setAttribute('stroke-width', '2');
+                        }
+                    }
+                });
+            });
+        });
+
+        // --- Panning & Zooming Logic ---
+        const viewport = document.getElementById('viewport');
+        let isDown = false;
+        let startX, startY;
+
+        // Fitur Zoom (Scroll Wheel)
+        viewport.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            
+            const minScale = 0.2; // Batas zoom out maksimal
+            const maxScale = 3;   // Batas zoom in maksimal
+            const zoomSensitivity = 0.002;
+            
+            const delta = e.deltaY * zoomSensitivity;
+            let newScale = scale - delta;
+            newScale = Math.max(minScale, Math.min(maxScale, newScale));
+            
+            // Kalkulasi agar zoom in/out fokus pada titik lokasi kursor mouse
+            const rect = viewport.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+            
+            translateX = mouseX - ((mouseX - translateX) * (newScale / scale));
+            translateY = mouseY - ((mouseY - translateY) * (newScale / scale));
+            
+            scale = newScale;
+            updateTransform();
+        }, { passive: false });
+
+        // Fitur Pan / Geser (Mouse Drag)
+        viewport.addEventListener('mousedown', (e) => {
+            // Abaikan aksi drag jika sedang menekan kartu atau tombol toggle
+            if(e.target.closest('.node-card') || e.target.closest('.toggle-btn')) return;
+            
+            isDown = true;
+            viewport.classList.add('active:cursor-grabbing');
+            
+            startX = e.clientX - translateX;
+            startY = e.clientY - translateY;
+        });
+
+        viewport.addEventListener('mouseleave', () => { 
+            isDown = false; 
+            viewport.classList.remove('active:cursor-grabbing');
+        });
+        
+        viewport.addEventListener('mouseup', () => { 
+            isDown = false; 
+            viewport.classList.remove('active:cursor-grabbing');
+        });
+        
+        viewport.addEventListener('mousemove', (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            
+            translateX = e.clientX - startX;
+            translateY = e.clientY - startY;
+            updateTransform();
+        });
+
+        // Interaksi Expand / Collapse (Tampil / Sembunyi)
+        document.querySelectorAll('.toggle-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation(); // Mencegah memicu fungsi drag
+                
+                const targetId = this.getAttribute('data-target');
+                const targetEl = document.getElementById(targetId);
+                const icon = this.querySelector('i');
+                
+                if (targetEl.classList.contains('hidden')) {
+                    // Munculkan bagian
+                    targetEl.classList.remove('hidden');
+                    icon.classList.replace('ph-plus', 'ph-minus');
+                } else {
+                    // Sembunyikan bagian
+                    targetEl.classList.add('hidden');
+                    icon.classList.replace('ph-minus', 'ph-plus');
+                }
+                
+                // Render ulang garis menggunakan requestAnimationFrame 
+                // agar kalkulasi dimensi DOM tepat setelah CSS diubah
+                requestAnimationFrame(drawLines);
+            });
+        });
+    </script>
+</body>
+</html>
