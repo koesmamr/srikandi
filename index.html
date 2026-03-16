@@ -100,7 +100,7 @@
                             
                             <!-- Tombol Toggle Bawah (Ke arah FAQ Terpisah) -->
                             <button class="toggle-btn absolute -bottom-4 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-[#2D2E30] border-2 border-[#131314] hover:bg-[#FB923C] hover:text-[#131314] text-[#C4C7C5] hover:text-white flex items-center justify-center z-20 cursor-pointer shadow-md transition-all duration-200" data-target="faq-row" title="Buka FAQ">
-                                <i class="ph-bold ph-plus text-sm transition-transform duration-200"></i>
+                                <i class="ph-bold ph-question text-sm transition-transform duration-200"></i>
                             </button>
                         </div>
                     </div>
@@ -776,11 +776,13 @@
                 if (targetEl.classList.contains('hidden')) {
                     // Munculkan bagian
                     targetEl.classList.remove('hidden');
-                    icon.classList.replace('ph-plus', 'ph-minus');
+                    if (icon.classList.contains('ph-plus')) icon.classList.replace('ph-plus', 'ph-minus');
+                    if (icon.classList.contains('ph-question')) icon.classList.replace('ph-question', 'ph-x');
                 } else {
                     // Sembunyikan bagian
                     targetEl.classList.add('hidden');
-                    icon.classList.replace('ph-minus', 'ph-plus');
+                    if (icon.classList.contains('ph-minus')) icon.classList.replace('ph-minus', 'ph-plus');
+                    if (icon.classList.contains('ph-x')) icon.classList.replace('ph-x', 'ph-question');
                 }
                 
                 // Render ulang garis menggunakan requestAnimationFrame 
