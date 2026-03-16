@@ -126,7 +126,7 @@
                             
                             <!-- Tasks for Branch 1 -->
                             <div class="flex flex-col gap-5 hidden" id="tasks-1">
-                                <!-- Task 1.a + Sub-node Video -->
+                                <!-- Task 1.a + Sub-node Video & Android App -->
                                 <div class="flex flex-row items-center gap-12 md:gap-16">
                                     <div class="relative">
                                         <div class="node-card p-4 w-80 border-l-2 border-l-[#444746]" id="task-1a">
@@ -142,9 +142,10 @@
                                             <i class="ph-bold ph-plus text-[10px] transition-transform duration-200"></i>
                                         </button>
                                     </div>
-                                    <div class="flex flex-col justify-center hidden" id="vids-1a">
-                                        <a href="https://youtube.com/shorts/69kyzk2V6TE?si=wTmUIgY4vrh3O3Uk" target="_blank" rel="noopener noreferrer" class="node-card block p-2 w-36 border-l-2 border-l-red-500 hover:border-red-400 cursor-pointer" id="vid-1a">
-                                            <div class="relative w-full aspect-[9/16] max-h-32 object-cover rounded bg-black overflow-hidden group">
+                                    <div class="flex flex-col gap-4 justify-center hidden" id="vids-1a">
+                                        <!-- Sub-node Video YouTube -->
+                                        <a href="https://youtube.com/shorts/69kyzk2V6TE?si=wTmUIgY4vrh3O3Uk" target="_blank" rel="noopener noreferrer" class="node-card block p-2 w-48 border-l-2 border-l-red-500 hover:border-red-400 cursor-pointer group" id="vid-1a">
+                                            <div class="relative w-full aspect-video max-h-32 object-cover rounded bg-black overflow-hidden group">
                                                 <img src="https://img.youtube.com/vi/69kyzk2V6TE/hqdefault.jpg" alt="Video Verifikasi" class="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity">
                                                 <div class="absolute inset-0 flex items-center justify-center">
                                                     <i class="ph-fill ph-play-circle text-3xl text-white opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all drop-shadow-md"></i>
@@ -153,6 +154,18 @@
                                             <div class="mt-2 flex items-center gap-1 justify-center text-[#C4C7C5] group-hover:text-white transition-colors">
                                                 <i class="ph-fill ph-youtube-logo text-red-500"></i>
                                                 <span class="text-[10px] font-medium truncate">Tonton Video</span>
+                                            </div>
+                                        </a>
+                                        <!-- Sub-node Download App Android -->
+                                        <a href="https://play.google.com/store/apps/details?id=com.anri.srikandi.v3" target="_blank" rel="noopener noreferrer" class="node-card block p-3 w-48 border-l-2 border-l-green-500 hover:border-green-400 cursor-pointer group" id="link-1a2">
+                                            <div class="flex items-center gap-3 text-[#C4C7C5] group-hover:text-white transition-colors">
+                                                <div class="w-8 h-8 rounded-full bg-green-500/20 flex items-center justify-center text-green-500 shrink-0">
+                                                    <i class="ph-fill ph-android-logo text-lg"></i>
+                                                </div>
+                                                <div class="flex flex-col overflow-hidden">
+                                                    <span class="text-xs font-medium text-gray-100">Aplikasi Android</span>
+                                                    <span class="text-[9px] text-muted truncate">Download di Play Store</span>
+                                                </div>
                                             </div>
                                         </a>
                                     </div>
@@ -468,6 +481,7 @@
 
             // Sub-nodes Videos & Link
             { from: 'task-1a', to: 'vid-1a', baseColor: '#444746', hoverColor: '#ef4444' },
+            { from: 'task-1a', to: 'link-1a2', baseColor: '#444746', hoverColor: '#22c55e' }, // Tambahan koneksi Playstore
             { from: 'task-1b', to: 'vid-1b', baseColor: '#444746', hoverColor: '#ef4444' },
             { from: 'task-2a', to: 'vid-2a1', baseColor: '#444746', hoverColor: '#ef4444' }, 
             { from: 'task-2a', to: 'link-2a2', baseColor: '#444746', hoverColor: '#60a5fa' },
