@@ -51,6 +51,7 @@
         .role-staf       { border-left: 5px solid #6DD58C; } /* Green */
         .role-sekretaris { border-left: 5px solid #FEE266; } /* Yellow */
         .role-direktur   { border-left: 5px solid #F2B8B5; } /* Red */
+        .role-faq        { border-left: 5px solid #FB923C; } /* Orange untuk FAQ */
 
         /* Text utility */
         .text-muted { color: #C4C7C5; }
@@ -62,266 +63,385 @@
     <main class="flex-1 overflow-hidden relative cursor-grab bg-grid touch-none" id="viewport">
         
         <!-- The Wrapper that scales with content -->
-        <div id="mindmap-wrapper" class="relative w-max p-16 md:p-32 flex items-center">
+        <div id="mindmap-wrapper" class="relative w-max p-16 md:p-32 flex items-center justify-center">
             
             <!-- SVG Layer for Connecting Lines -->
             <svg id="svg-layer" class="absolute top-0 left-0 w-full h-full pointer-events-none z-0"></svg>
 
-            <!-- Mindmap Flex Container -->
-            <div class="flex flex-row items-stretch gap-20 md:gap-32 w-max">
+            <!-- Layout Vertikal Utama (Baris 1: Mindmap Utama, Baris 2: FAQ) -->
+            <div class="flex flex-col gap-16 md:gap-24 w-max">
                 
-                <!-- LEVEL 0: ROOT -->
-                <div class="flex flex-col justify-center">
-                    <div class="relative">
-                        <div class="node-card p-6 w-80 shadow-lg text-center bg-gradient-to-br from-[#1E1F20] to-[#131314]" id="root">
-                            <!-- Logo YouTube Kecil (Bisa Diklik) -->
-                            <a href="https://youtu.be/Qnw-wW1nwjE" target="_blank" rel="noopener noreferrer" class="absolute left-4 top-1/2 -translate-y-1/2 flex items-center justify-center text-red-500 hover:text-red-400 hover:scale-125 transition-all duration-200 cursor-pointer z-20" title="Tonton Video Pengantar">
-                                <i class="ph-fill ph-youtube-logo text-2xl drop-shadow-md"></i>
-                            </a>
+                <!-- ROW 1: MINDMAP UTAMA -->
+                <div class="flex flex-row items-stretch gap-20 md:gap-32 w-max">
+                    <!-- LEVEL 0: ROOT -->
+                    <div class="flex flex-col justify-center w-80 items-center">
+                        <div class="relative w-full">
+                            <div class="node-card p-6 w-full shadow-lg text-center bg-gradient-to-br from-[#1E1F20] to-[#131314]" id="root">
+                                <!-- Logo YouTube Kecil (Bisa Diklik) -->
+                                <a href="https://youtu.be/Qnw-wW1nwjE" target="_blank" rel="noopener noreferrer" class="absolute left-4 top-1/2 -translate-y-1/2 flex items-center justify-center text-red-500 hover:text-red-400 hover:scale-125 transition-all duration-200 cursor-pointer z-20" title="Tonton Video Pengantar">
+                                    <i class="ph-fill ph-youtube-logo text-2xl drop-shadow-md"></i>
+                                </a>
+                                
+                                <div class="pl-4">
+                                    <!-- Judul SRIKANDI yang dapat diklik -->
+                                    <h2 class="text-xl font-semibold mb-2">
+                                        <a href="https://srikandi.arsip.go.id/" target="_blank" rel="noopener noreferrer" class="text-white hover:text-blue-400 hover:underline transition-colors duration-200 relative z-20" title="Buka website resmi SRIKANDI">
+                                            SRIKANDI
+                                        </a>
+                                    </h2>
+                                    <p class="text-sm text-muted">Sistem Informasi Kearsipan Dinamis Terintegrasi</p>
+                                </div>
+                            </div>
                             
-                            <div class="pl-4">
-                                <h2 class="text-xl font-semibold text-white mb-2">SRIKANDI</h2>
-                                <p class="text-sm text-muted">Sistem Informasi Kearsipan Dinamis Terintegrasi</p>
+                            <!-- Tombol Toggle Kanan (Ke arah Roles/Aktor) -->
+                            <button class="toggle-btn absolute -right-4 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-[#2D2E30] border-2 border-[#131314] hover:bg-[#444746] hover:border-[#E3E3E3] text-[#C4C7C5] hover:text-white flex items-center justify-center z-20 cursor-pointer shadow-md transition-all duration-200" data-target="level-1">
+                                <i class="ph-bold ph-plus text-sm transition-transform duration-200"></i>
+                            </button>
+                            
+                            <!-- Tombol Toggle Bawah (Ke arah FAQ Terpisah) -->
+                            <button class="toggle-btn absolute -bottom-4 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-[#2D2E30] border-2 border-[#131314] hover:bg-[#FB923C] hover:text-[#131314] text-[#C4C7C5] hover:text-white flex items-center justify-center z-20 cursor-pointer shadow-md transition-all duration-200" data-target="faq-row" title="Buka FAQ">
+                                <i class="ph-bold ph-plus text-sm transition-transform duration-200"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- LEVEL 1 & 2: ROLES & TASKS -->
+                    <div class="flex flex-col gap-12 justify-center hidden" id="level-1">
+
+                        <!-- BRANCH 1: WADIR / KABAG / KABID / JF -->
+                        <div class="flex flex-row items-center gap-16 md:gap-24">
+                            <div class="relative">
+                                <div class="node-card role-wadir p-5 w-72" id="role-1">
+                                    <div class="flex items-center gap-3 mb-2">
+                                        <i class="ph-fill ph-user-gear text-[#A8C7FA] text-xl"></i>
+                                        <span class="text-xs font-bold tracking-wider text-[#A8C7FA] uppercase">Aktor 1</span>
+                                    </div>
+                                    <h3 class="font-medium text-lg leading-tight">Wadir / Kabag / Kabid / JF</h3>
+                                </div>
+                                <!-- Tombol Toggle Role 1 -->
+                                <button class="toggle-btn absolute -right-4 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-[#2D2E30] border-2 border-[#131314] hover:bg-[#A8C7FA] hover:text-[#131314] text-[#C4C7C5] flex items-center justify-center z-20 cursor-pointer shadow-md transition-all duration-200" data-target="tasks-1">
+                                    <i class="ph-bold ph-plus text-sm transition-transform duration-200"></i>
+                                </button>
+                            </div>
+                            
+                            <!-- Tasks for Branch 1 -->
+                            <div class="flex flex-col gap-5 hidden" id="tasks-1">
+                                <!-- Task 1.a + Sub-node Video -->
+                                <div class="flex flex-row items-center gap-12 md:gap-16">
+                                    <div class="relative">
+                                        <div class="node-card p-4 w-80 border-l-2 border-l-[#444746]" id="task-1a">
+                                            <div class="flex items-start gap-3">
+                                                <i class="ph ph-check-circle text-[#A8C7FA] text-lg mt-0.5"></i>
+                                                <div>
+                                                    <h4 class="font-medium text-sm text-gray-100 mb-1">1.a Verifikasi Surat Keluar</h4>
+                                                    <p class="text-xs text-muted leading-relaxed">Sama dengan proses pemberian paraf pada metode surat manual sebelum ditandatangani.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button class="toggle-btn absolute -right-3 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-[#2D2E30] border border-[#131314] hover:bg-red-500 hover:text-white text-[#C4C7C5] flex items-center justify-center z-20 cursor-pointer shadow-md transition-all duration-200" data-target="vids-1a">
+                                            <i class="ph-bold ph-plus text-[10px] transition-transform duration-200"></i>
+                                        </button>
+                                    </div>
+                                    <div class="flex flex-col justify-center hidden" id="vids-1a">
+                                        <a href="https://youtube.com/shorts/69kyzk2V6TE?si=wTmUIgY4vrh3O3Uk" target="_blank" rel="noopener noreferrer" class="node-card block p-2 w-36 border-l-2 border-l-red-500 hover:border-red-400 cursor-pointer" id="vid-1a">
+                                            <div class="relative w-full aspect-[9/16] max-h-32 object-cover rounded bg-black overflow-hidden group">
+                                                <img src="https://img.youtube.com/vi/69kyzk2V6TE/hqdefault.jpg" alt="Video Verifikasi" class="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity">
+                                                <div class="absolute inset-0 flex items-center justify-center">
+                                                    <i class="ph-fill ph-play-circle text-3xl text-white opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all drop-shadow-md"></i>
+                                                </div>
+                                            </div>
+                                            <div class="mt-2 flex items-center gap-1 justify-center text-[#C4C7C5] group-hover:text-white transition-colors">
+                                                <i class="ph-fill ph-youtube-logo text-red-500"></i>
+                                                <span class="text-[10px] font-medium truncate">Tonton Video</span>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <!-- Task 1.b + Sub-node Video -->
+                                <div class="flex flex-row items-center gap-12 md:gap-16">
+                                    <div class="relative">
+                                        <div class="node-card p-4 w-80 border-l-2 border-l-[#444746]" id="task-1b">
+                                            <div class="flex items-start gap-3">
+                                                <i class="ph ph-share-network text-[#A8C7FA] text-lg mt-0.5"></i>
+                                                <div>
+                                                    <h4 class="font-medium text-sm text-gray-100 mb-1">1.b Disposisi</h4>
+                                                    <p class="text-xs text-muted leading-relaxed">Mendisposisikan ke bawahan setelah menerima disposisi dari atasan, atau berkoordinasi dengan pejabat setara.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button class="toggle-btn absolute -right-3 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-[#2D2E30] border border-[#131314] hover:bg-red-500 hover:text-white text-[#C4C7C5] flex items-center justify-center z-20 cursor-pointer shadow-md transition-all duration-200" data-target="vids-1b">
+                                            <i class="ph-bold ph-plus text-[10px] transition-transform duration-200"></i>
+                                        </button>
+                                    </div>
+                                    <div class="flex flex-col justify-center hidden" id="vids-1b">
+                                        <a href="https://youtu.be/mfIHburqdNg" target="_blank" rel="noopener noreferrer" class="node-card block p-2 w-48 border-l-2 border-l-red-500 hover:border-red-400 cursor-pointer" id="vid-1b">
+                                            <div class="relative w-full aspect-video rounded bg-black overflow-hidden group">
+                                                <img src="https://img.youtube.com/vi/mfIHburqdNg/hqdefault.jpg" alt="Video Disposisi" class="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity">
+                                                <div class="absolute inset-0 flex items-center justify-center">
+                                                    <i class="ph-fill ph-play-circle text-3xl text-white opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all drop-shadow-md"></i>
+                                                </div>
+                                            </div>
+                                            <div class="mt-2 flex items-center gap-1 justify-center text-[#C4C7C5] group-hover:text-white transition-colors">
+                                                <i class="ph-fill ph-youtube-logo text-red-500"></i>
+                                                <span class="text-[10px] font-medium truncate">Tonton Video</span>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <!-- Tombol Toggle Root -->
-                        <button class="toggle-btn absolute -right-4 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-[#2D2E30] border-2 border-[#131314] hover:bg-[#444746] hover:border-[#E3E3E3] text-[#C4C7C5] hover:text-white flex items-center justify-center z-20 cursor-pointer shadow-md transition-all duration-200" data-target="level-1">
-                            <i class="ph-bold ph-plus text-sm transition-transform duration-200"></i>
-                        </button>
+
+                        <!-- BRANCH 2: STAF -->
+                        <div class="flex flex-row items-center gap-16 md:gap-24">
+                            <div class="relative">
+                                <div class="node-card role-staf p-5 w-72" id="role-2">
+                                    <div class="flex items-center gap-3 mb-2">
+                                        <i class="ph-fill ph-user text-[#6DD58C] text-xl"></i>
+                                        <span class="text-xs font-bold tracking-wider text-[#6DD58C] uppercase">Aktor 2</span>
+                                    </div>
+                                    <h3 class="font-medium text-lg leading-tight">Staf Pelaksana</h3>
+                                </div>
+                                <button class="toggle-btn absolute -right-4 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-[#2D2E30] border-2 border-[#131314] hover:bg-[#6DD58C] hover:text-[#131314] text-[#C4C7C5] flex items-center justify-center z-20 cursor-pointer shadow-md transition-all duration-200" data-target="tasks-2">
+                                    <i class="ph-bold ph-plus text-sm transition-transform duration-200"></i>
+                                </button>
+                            </div>
+                            
+                            <!-- Tasks for Branch 2 -->
+                            <div class="flex flex-col gap-5 hidden" id="tasks-2">
+                                <div class="flex flex-row items-center gap-12 md:gap-16">
+                                    <div class="relative">
+                                        <div class="node-card p-4 w-80 border-l-2 border-l-[#444746]" id="task-2a">
+                                            <div class="flex items-start gap-3">
+                                                <i class="ph ph-file-arrow-up text-[#6DD58C] text-lg mt-0.5"></i>
+                                                <div>
+                                                    <h4 class="font-medium text-sm text-gray-100 mb-1">2.a Membuat/Upload Draft</h4>
+                                                    <p class="text-xs text-muted leading-relaxed">Membuat surat atau mengupload draft surat ke dalam sistem untuk ditandatangani oleh Direktur.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button class="toggle-btn absolute -right-3 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-[#2D2E30] border border-[#131314] hover:bg-[#6DD58C] hover:text-[#131314] text-[#C4C7C5] flex items-center justify-center z-20 cursor-pointer shadow-md transition-all duration-200" data-target="vids-2a">
+                                            <i class="ph-bold ph-plus text-[10px] transition-transform duration-200"></i>
+                                        </button>
+                                    </div>
+                                    <div class="flex flex-col gap-4 justify-center hidden" id="vids-2a">
+                                        <a href="https://youtu.be/U8jSE1csfGc" target="_blank" rel="noopener noreferrer" class="node-card block p-2 w-48 border-l-2 border-l-red-500 hover:border-red-400 cursor-pointer" id="vid-2a1">
+                                            <div class="relative w-full aspect-video rounded bg-black overflow-hidden group">
+                                                <img src="https://img.youtube.com/vi/U8jSE1csfGc/hqdefault.jpg" alt="Video Tutorial 2.a" class="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity">
+                                                <div class="absolute inset-0 flex items-center justify-center">
+                                                    <i class="ph-fill ph-play-circle text-3xl text-white opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all drop-shadow-md"></i>
+                                                </div>
+                                            </div>
+                                            <div class="mt-2 flex items-center gap-1 justify-center text-[#C4C7C5] group-hover:text-white transition-colors">
+                                                <i class="ph-fill ph-youtube-logo text-red-500"></i>
+                                                <span class="text-[10px] font-medium truncate">2.a.1 Tutorial Upload</span>
+                                            </div>
+                                        </a>
+                                        <a href="http://koesma.biz.id/templatesrikandi" target="_blank" rel="noopener noreferrer" class="node-card block p-3 w-48 border-l-2 border-l-blue-400 hover:border-blue-300 cursor-pointer" id="link-2a2">
+                                            <div class="flex items-center gap-3 text-[#C4C7C5] group-hover:text-white transition-colors">
+                                                <div class="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 shrink-0">
+                                                    <i class="ph-fill ph-file-doc text-lg"></i>
+                                                </div>
+                                                <div class="flex flex-col overflow-hidden">
+                                                    <span class="text-xs font-medium text-gray-100">2.a.2 Template</span>
+                                                    <span class="text-[9px] text-muted truncate">koesma.biz.id</span>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="node-card p-4 w-80 border-l-2 border-l-[#444746]" id="task-2b">
+                                    <div class="flex items-start gap-3">
+                                        <i class="ph ph-list-checks text-[#6DD58C] text-lg mt-0.5"></i>
+                                        <div>
+                                            <h4 class="font-medium text-sm text-gray-100 mb-1">2.b Tindak Lanjut Disposisi</h4>
+                                            <p class="text-xs text-muted leading-relaxed">Menerima notifikasi disposisi tugas dari atasan dan menyelesaikan pekerjaan tersebut.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- BRANCH 3: SEKRETARIS / TATA USAHA -->
+                        <div class="flex flex-row items-center gap-16 md:gap-24">
+                            <div class="relative">
+                                <div class="node-card role-sekretaris p-5 w-72" id="role-3">
+                                    <div class="flex items-center gap-3 mb-2">
+                                        <i class="ph-fill ph-users-three text-[#FEE266] text-xl"></i>
+                                        <span class="text-xs font-bold tracking-wider text-[#FEE266] uppercase">Aktor 3</span>
+                                    </div>
+                                    <h3 class="font-medium text-lg leading-tight">Sekretaris Srikandi / Tata Usaha</h3>
+                                    <p class="text-xs text-muted mt-3 pt-3 border-t border-[#444746]">Mengelola administrasi dan pendistribusian surat secara sistem.</p>
+                                </div>
+                            </div>
+                            <!-- Empty column structure to maintain flex alignment -->
+                            <div class="flex flex-col gap-5 w-80 opacity-0 pointer-events-none hidden md:block" id="task-3-placeholder"></div>
+                        </div>
+
+                        <!-- BRANCH 4: DIREKTUR -->
+                        <div class="flex flex-row items-center gap-16 md:gap-24">
+                            <div class="relative">
+                                <div class="node-card role-direktur p-5 w-72" id="role-4">
+                                    <div class="flex items-center gap-3 mb-2">
+                                        <i class="ph-fill ph-user-circle-gear text-[#F2B8B5] text-xl"></i>
+                                        <span class="text-xs font-bold tracking-wider text-[#F2B8B5] uppercase">Aktor 4</span>
+                                    </div>
+                                    <h3 class="font-medium text-lg leading-tight">Direktur</h3>
+                                </div>
+                                <button class="toggle-btn absolute -right-4 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-[#2D2E30] border-2 border-[#131314] hover:bg-[#F2B8B5] hover:text-[#131314] text-[#C4C7C5] flex items-center justify-center z-20 cursor-pointer shadow-md transition-all duration-200" data-target="tasks-4">
+                                    <i class="ph-bold ph-plus text-sm transition-transform duration-200"></i>
+                                </button>
+                            </div>
+                            
+                            <!-- Tasks for Branch 4 -->
+                            <div class="flex flex-col gap-5 hidden" id="tasks-4">
+                                <div class="node-card p-4 w-80 border-l-2 border-l-[#444746]" id="task-4a">
+                                    <div class="flex items-start gap-3">
+                                        <i class="ph ph-pen-nib text-[#F2B8B5] text-lg mt-0.5"></i>
+                                        <div>
+                                            <h4 class="font-medium text-sm text-gray-100 mb-1">4.1 Menandatangani Surat</h4>
+                                            <p class="text-xs text-muted leading-relaxed">Melakukan penandatanganan elektronik pada surat keluar yang telah diverifikasi.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="node-card p-4 w-80 border-l-2 border-l-[#444746]" id="task-4b">
+                                    <div class="flex items-start gap-3">
+                                        <i class="ph ph-envelope-open text-[#F2B8B5] text-lg mt-0.5"></i>
+                                        <div>
+                                            <h4 class="font-medium text-sm text-gray-100 mb-1">4.2 Disposisi Surat Masuk</h4>
+                                            <p class="text-xs text-muted leading-relaxed">Menerima surat masuk dari eksternal dan mendisposisikan ke unit/pejabat di bawahnya.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- LEVEL 1 & 2: ROLES & TASKS -->
-                <div class="flex flex-col gap-12 justify-center hidden" id="level-1">
-
-                    <!-- BRANCH 1: WADIR / KABAG / KABID / JF -->
-                    <div class="flex flex-row items-center gap-16 md:gap-24">
+                <!-- ROW 2: FAQ BRANCH (BERCABANG KE BAWAH DARI ROOT) -->
+                <div class="flex flex-row items-start gap-20 md:gap-32 w-max hidden" id="faq-row">
+                    <!-- LEVEL FAQ (Aktor Bantuan) -->
+                    <div class="flex flex-col justify-start w-80 items-center">
                         <div class="relative">
-                            <div class="node-card role-wadir p-5 w-72" id="role-1">
+                            <div class="node-card role-faq p-5 w-72" id="role-faq">
                                 <div class="flex items-center gap-3 mb-2">
-                                    <i class="ph-fill ph-user-gear text-[#A8C7FA] text-xl"></i>
-                                    <span class="text-xs font-bold tracking-wider text-[#A8C7FA] uppercase">Aktor 1</span>
+                                    <i class="ph-fill ph-info text-[#FB923C] text-xl"></i>
+                                    <span class="text-xs font-bold tracking-wider text-[#FB923C] uppercase">Bantuan</span>
                                 </div>
-                                <h3 class="font-medium text-lg leading-tight">Wadir / Kabag / Kabid / JF</h3>
+                                <h3 class="font-medium text-lg leading-tight">FAQ (Pertanyaan Umum)</h3>
                             </div>
-                            <!-- Tombol Toggle Role 1 -->
-                            <button class="toggle-btn absolute -right-4 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-[#2D2E30] border-2 border-[#131314] hover:bg-[#A8C7FA] hover:text-[#131314] text-[#C4C7C5] flex items-center justify-center z-20 cursor-pointer shadow-md transition-all duration-200" data-target="tasks-1">
+                            <!-- Tombol Toggle Kanan (Ke List Pertanyaan FAQ) -->
+                            <button class="toggle-btn absolute -right-4 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-[#2D2E30] border-2 border-[#131314] hover:bg-[#FB923C] hover:text-[#131314] text-[#C4C7C5] flex items-center justify-center z-20 cursor-pointer shadow-md transition-all duration-200" data-target="tasks-faq">
                                 <i class="ph-bold ph-plus text-sm transition-transform duration-200"></i>
                             </button>
                         </div>
-                        
-                        <!-- Tasks for Branch 1 -->
-                        <div class="flex flex-col gap-5 hidden" id="tasks-1">
-                            
-                            <!-- Task 1.a + Sub-node Video -->
-                            <div class="flex flex-row items-center gap-12 md:gap-16">
-                                <div class="relative">
-                                    <div class="node-card p-4 w-80 border-l-2 border-l-[#444746]" id="task-1a">
-                                        <div class="flex items-start gap-3">
-                                            <i class="ph ph-check-circle text-[#A8C7FA] text-lg mt-0.5"></i>
-                                            <div>
-                                                <h4 class="font-medium text-sm text-gray-100 mb-1">1.a Verifikasi Surat Keluar</h4>
-                                                <p class="text-xs text-muted leading-relaxed">Sama dengan proses pemberian paraf pada metode surat manual sebelum ditandatangani.</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Tombol Toggle Task 1a -->
-                                    <button class="toggle-btn absolute -right-3 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-[#2D2E30] border border-[#131314] hover:bg-red-500 hover:text-white text-[#C4C7C5] flex items-center justify-center z-20 cursor-pointer shadow-md transition-all duration-200" data-target="vids-1a">
-                                        <i class="ph-bold ph-plus text-[10px] transition-transform duration-200"></i>
-                                    </button>
-                                </div>
-                                <!-- Video 1a (YouTube Short) -->
-                                <div class="flex flex-col justify-center hidden" id="vids-1a">
-                                    <a href="https://youtube.com/shorts/69kyzk2V6TE?si=wTmUIgY4vrh3O3Uk" target="_blank" rel="noopener noreferrer" class="node-card block p-2 w-36 border-l-2 border-l-red-500 hover:border-red-400 cursor-pointer" id="vid-1a">
-                                        <div class="relative w-full aspect-[9/16] max-h-32 object-cover rounded bg-black overflow-hidden group">
-                                            <img src="https://img.youtube.com/vi/69kyzk2V6TE/hqdefault.jpg" alt="Video Verifikasi" class="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity">
-                                            <div class="absolute inset-0 flex items-center justify-center">
-                                                <i class="ph-fill ph-play-circle text-3xl text-white opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all drop-shadow-md"></i>
-                                            </div>
-                                        </div>
-                                        <div class="mt-2 flex items-center gap-1 justify-center text-[#C4C7C5] group-hover:text-white transition-colors">
-                                            <i class="ph-fill ph-youtube-logo text-red-500"></i>
-                                            <span class="text-[10px] font-medium truncate">Tonton Video</span>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-
-                            <!-- Task 1.b + Sub-node Video -->
-                            <div class="flex flex-row items-center gap-12 md:gap-16">
-                                <div class="relative">
-                                    <div class="node-card p-4 w-80 border-l-2 border-l-[#444746]" id="task-1b">
-                                        <div class="flex items-start gap-3">
-                                            <i class="ph ph-share-network text-[#A8C7FA] text-lg mt-0.5"></i>
-                                            <div>
-                                                <h4 class="font-medium text-sm text-gray-100 mb-1">1.b Disposisi</h4>
-                                                <p class="text-xs text-muted leading-relaxed">Mendisposisikan ke bawahan setelah menerima disposisi dari atasan, atau berkoordinasi dengan pejabat setara.</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Tombol Toggle Task 1b -->
-                                    <button class="toggle-btn absolute -right-3 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-[#2D2E30] border border-[#131314] hover:bg-red-500 hover:text-white text-[#C4C7C5] flex items-center justify-center z-20 cursor-pointer shadow-md transition-all duration-200" data-target="vids-1b">
-                                        <i class="ph-bold ph-plus text-[10px] transition-transform duration-200"></i>
-                                    </button>
-                                </div>
-                                <!-- Video 1b (Standard YouTube) -->
-                                <div class="flex flex-col justify-center hidden" id="vids-1b">
-                                    <a href="https://youtu.be/mfIHburqdNg" target="_blank" rel="noopener noreferrer" class="node-card block p-2 w-48 border-l-2 border-l-red-500 hover:border-red-400 cursor-pointer" id="vid-1b">
-                                        <div class="relative w-full aspect-video rounded bg-black overflow-hidden group">
-                                            <img src="https://img.youtube.com/vi/mfIHburqdNg/hqdefault.jpg" alt="Video Disposisi" class="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity">
-                                            <div class="absolute inset-0 flex items-center justify-center">
-                                                <i class="ph-fill ph-play-circle text-3xl text-white opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all drop-shadow-md"></i>
-                                            </div>
-                                        </div>
-                                        <div class="mt-2 flex items-center gap-1 justify-center text-[#C4C7C5] group-hover:text-white transition-colors">
-                                            <i class="ph-fill ph-youtube-logo text-red-500"></i>
-                                            <span class="text-[10px] font-medium truncate">Tonton Video</span>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-
-                        </div>
                     </div>
-
-                    <!-- BRANCH 2: STAF -->
-                    <div class="flex flex-row items-center gap-16 md:gap-24">
-                        <div class="relative">
-                            <div class="node-card role-staf p-5 w-72" id="role-2">
-                                <div class="flex items-center gap-3 mb-2">
-                                    <i class="ph-fill ph-user text-[#6DD58C] text-xl"></i>
-                                    <span class="text-xs font-bold tracking-wider text-[#6DD58C] uppercase">Aktor 2</span>
+                    
+                    <!-- TASKS / LIST 10 PERTANYAAN FAQ -->
+                    <div class="flex flex-col gap-4 hidden" id="tasks-faq">
+                        <!-- FAQ 1 -->
+                        <div class="node-card p-4 w-[350px] md:w-[400px] border-l-2 border-l-[#444746]" id="faq-1">
+                            <div class="flex items-start gap-3">
+                                <i class="ph-fill ph-chat-circle-question text-[#FB923C] text-lg mt-0.5 shrink-0"></i>
+                                <div>
+                                    <h4 class="font-medium text-sm text-gray-100 mb-1">1. Saya belum punya akun Srikandi.</h4>
+                                    <p class="text-xs text-muted leading-relaxed">Silakan hubungi sdr. Dinda untuk dibuatkan akun baru, no WA <span class="text-white font-bold">085607158849</span>. Dan siapkan data: NIK, Nama Lengkap, Jabatan, Ruangan.</p>
                                 </div>
-                                <h3 class="font-medium text-lg leading-tight">Staf Pelaksana</h3>
                             </div>
-                            <!-- Tombol Toggle Role 2 -->
-                            <button class="toggle-btn absolute -right-4 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-[#2D2E30] border-2 border-[#131314] hover:bg-[#6DD58C] hover:text-[#131314] text-[#C4C7C5] flex items-center justify-center z-20 cursor-pointer shadow-md transition-all duration-200" data-target="tasks-2">
-                                <i class="ph-bold ph-plus text-sm transition-transform duration-200"></i>
-                            </button>
                         </div>
-                        
-                        <!-- Tasks for Branch 2 -->
-                        <div class="flex flex-col gap-5 hidden" id="tasks-2">
-                            
-                            <!-- Task 2.a + Sub-node Video & Link -->
-                            <div class="flex flex-row items-center gap-12 md:gap-16">
-                                <div class="relative">
-                                    <div class="node-card p-4 w-80 border-l-2 border-l-[#444746]" id="task-2a">
-                                        <div class="flex items-start gap-3">
-                                            <i class="ph ph-file-arrow-up text-[#6DD58C] text-lg mt-0.5"></i>
-                                            <div>
-                                                <h4 class="font-medium text-sm text-gray-100 mb-1">2.a Membuat/Upload Draft</h4>
-                                                <p class="text-xs text-muted leading-relaxed">Membuat surat atau mengupload draft surat ke dalam sistem untuk ditandatangani oleh Direktur.</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Tombol Toggle Task 2a -->
-                                    <button class="toggle-btn absolute -right-3 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-[#2D2E30] border border-[#131314] hover:bg-[#6DD58C] hover:text-[#131314] text-[#C4C7C5] flex items-center justify-center z-20 cursor-pointer shadow-md transition-all duration-200" data-target="vids-2a">
-                                        <i class="ph-bold ph-plus text-[10px] transition-transform duration-200"></i>
-                                    </button>
-                                </div>
-                                <!-- Sub-nodes 2a (Video & Template) -->
-                                <div class="flex flex-col gap-4 justify-center hidden" id="vids-2a">
-                                    
-                                    <!-- 2.a.1 Video YouTube -->
-                                    <a href="https://youtu.be/U8jSE1csfGc" target="_blank" rel="noopener noreferrer" class="node-card block p-2 w-48 border-l-2 border-l-red-500 hover:border-red-400 cursor-pointer" id="vid-2a1">
-                                        <div class="relative w-full aspect-video rounded bg-black overflow-hidden group">
-                                            <img src="https://img.youtube.com/vi/U8jSE1csfGc/hqdefault.jpg" alt="Video Tutorial 2.a" class="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity">
-                                            <div class="absolute inset-0 flex items-center justify-center">
-                                                <i class="ph-fill ph-play-circle text-3xl text-white opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all drop-shadow-md"></i>
-                                            </div>
-                                        </div>
-                                        <div class="mt-2 flex items-center gap-1 justify-center text-[#C4C7C5] group-hover:text-white transition-colors">
-                                            <i class="ph-fill ph-youtube-logo text-red-500"></i>
-                                            <span class="text-[10px] font-medium truncate">2.a.1 Tutorial Upload</span>
-                                        </div>
-                                    </a>
-
-                                    <!-- 2.a.2 Template Link -->
-                                    <a href="http://koesma.biz.id/templatesrikandi" target="_blank" rel="noopener noreferrer" class="node-card block p-3 w-48 border-l-2 border-l-blue-400 hover:border-blue-300 cursor-pointer" id="link-2a2">
-                                        <div class="flex items-center gap-3 text-[#C4C7C5] group-hover:text-white transition-colors">
-                                            <div class="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 shrink-0">
-                                                <i class="ph-fill ph-file-doc text-lg"></i>
-                                            </div>
-                                            <div class="flex flex-col overflow-hidden">
-                                                <span class="text-xs font-medium text-gray-100">2.a.2 Template</span>
-                                                <span class="text-[9px] text-muted truncate">koesma.biz.id</span>
-                                            </div>
-                                        </div>
-                                    </a>
-
+                        <!-- FAQ 2 -->
+                        <div class="node-card p-4 w-[350px] md:w-[400px] border-l-2 border-l-[#444746]" id="faq-2">
+                            <div class="flex items-start gap-3">
+                                <i class="ph-fill ph-chat-circle-question text-[#FB923C] text-lg mt-0.5 shrink-0"></i>
+                                <div>
+                                    <h4 class="font-medium text-sm text-gray-100 mb-1">2. Saya lupa password akun Srikandi.</h4>
+                                    <p class="text-xs text-muted leading-relaxed">Anda dapat menggunakan fitur "Lupa Password" di halaman login, atau menghubungi admin pengelola Srikandi (Sdr. Dinda) untuk meminta reset kata sandi Anda.</p>
                                 </div>
                             </div>
-
-                            <!-- Task 2.b -->
-                            <div class="node-card p-4 w-80 border-l-2 border-l-[#444746]" id="task-2b">
-                                <div class="flex items-start gap-3">
-                                    <i class="ph ph-list-checks text-[#6DD58C] text-lg mt-0.5"></i>
-                                    <div>
-                                        <h4 class="font-medium text-sm text-gray-100 mb-1">2.b Tindak Lanjut Disposisi</h4>
-                                        <p class="text-xs text-muted leading-relaxed">Menerima notifikasi disposisi tugas dari atasan dan menyelesaikan pekerjaan tersebut.</p>
-                                    </div>
+                        </div>
+                        <!-- FAQ 3 -->
+                        <div class="node-card p-4 w-[350px] md:w-[400px] border-l-2 border-l-[#444746]" id="faq-3">
+                            <div class="flex items-start gap-3">
+                                <i class="ph-fill ph-chat-circle-question text-[#FB923C] text-lg mt-0.5 shrink-0"></i>
+                                <div>
+                                    <h4 class="font-medium text-sm text-gray-100 mb-1">3. Bagaimana cara login ke Srikandi?</h4>
+                                    <p class="text-xs text-muted leading-relaxed">Buka website resmi di <a href="https://srikandi.arsip.go.id" class="text-blue-400 hover:underline">srikandi.arsip.go.id</a>, masukkan Username (biasanya NIK) dan Password yang telah diberikan, lalu klik tombol Masuk.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- FAQ 4 -->
+                        <div class="node-card p-4 w-[350px] md:w-[400px] border-l-2 border-l-[#444746]" id="faq-4">
+                            <div class="flex items-start gap-3">
+                                <i class="ph-fill ph-chat-circle-question text-[#FB923C] text-lg mt-0.5 shrink-0"></i>
+                                <div>
+                                    <h4 class="font-medium text-sm text-gray-100 mb-1">4. Format file apa saja yang bisa diupload?</h4>
+                                    <p class="text-xs text-muted leading-relaxed">Untuk dokumen surat utama yang akan dikirim, file wajib berformat <strong>PDF</strong>. Untuk lampiran bisa menyesuaikan kebijakan (seperti PDF, JPG/PNG, atau DOCX).</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- FAQ 5 -->
+                        <div class="node-card p-4 w-[350px] md:w-[400px] border-l-2 border-l-[#444746]" id="faq-5">
+                            <div class="flex items-start gap-3">
+                                <i class="ph-fill ph-chat-circle-question text-[#FB923C] text-lg mt-0.5 shrink-0"></i>
+                                <div>
+                                    <h4 class="font-medium text-sm text-gray-100 mb-1">5. Cara buat draft surat keluar?</h4>
+                                    <p class="text-xs text-muted leading-relaxed">Login sebagai Staf, pilih menu <strong>Surat Keluar > Registrasi Naskah Keluar</strong>. Isi form metadata yang diminta, tentukan penandatangan, lalu unggah file draft surat Anda.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- FAQ 6 -->
+                        <div class="node-card p-4 w-[350px] md:w-[400px] border-l-2 border-l-[#444746]" id="faq-6">
+                            <div class="flex items-start gap-3">
+                                <i class="ph-fill ph-chat-circle-question text-[#FB923C] text-lg mt-0.5 shrink-0"></i>
+                                <div>
+                                    <h4 class="font-medium text-sm text-gray-100 mb-1">6. Apa itu fitur Disposisi?</h4>
+                                    <p class="text-xs text-muted leading-relaxed">Disposisi adalah fitur untuk meneruskan dokumen masuk kepada bawahan atau unit lain beserta instruksi dan tenggat waktu yang harus dilakukan.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- FAQ 7 -->
+                        <div class="node-card p-4 w-[350px] md:w-[400px] border-l-2 border-l-[#444746]" id="faq-7">
+                            <div class="flex items-start gap-3">
+                                <i class="ph-fill ph-chat-circle-question text-[#FB923C] text-lg mt-0.5 shrink-0"></i>
+                                <div>
+                                    <h4 class="font-medium text-sm text-gray-100 mb-1">7. Cara Tanda Tangan Elektronik (TTE)?</h4>
+                                    <p class="text-xs text-muted leading-relaxed">Pastikan Anda memiliki sertifikat elektronik (Passphrase) BSrE. Buka menu <strong>Naskah Belum Ditandatangani</strong>, pilih naskah, klik Tanda Tangan, masukkan Passphrase.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- FAQ 8 -->
+                        <div class="node-card p-4 w-[350px] md:w-[400px] border-l-2 border-l-[#444746]" id="faq-8">
+                            <div class="flex items-start gap-3">
+                                <i class="ph-fill ph-chat-circle-question text-[#FB923C] text-lg mt-0.5 shrink-0"></i>
+                                <div>
+                                    <h4 class="font-medium text-sm text-gray-100 mb-1">8. Mengapa surat tak bisa ditandatangani?</h4>
+                                    <p class="text-xs text-muted leading-relaxed">Kemungkinan: (1) Surat belum diverifikasi/diparaf bawahan. (2) Passphrase yang dimasukkan salah. (3) Koneksi server BSrE sedang ada gangguan.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- FAQ 9 -->
+                        <div class="node-card p-4 w-[350px] md:w-[400px] border-l-2 border-l-[#444746]" id="faq-9">
+                            <div class="flex items-start gap-3">
+                                <i class="ph-fill ph-chat-circle-question text-[#FB923C] text-lg mt-0.5 shrink-0"></i>
+                                <div>
+                                    <h4 class="font-medium text-sm text-gray-100 mb-1">9. Mengecek naskah / surat masuk?</h4>
+                                    <p class="text-xs text-muted leading-relaxed">Buka menu <strong>Naskah Masuk</strong> di panel kiri. Surat baru akan muncul dengan tulisan cetak tebal (bold), menandakan surat belum dibaca atau didisposisi.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- FAQ 10 -->
+                        <div class="node-card p-4 w-[350px] md:w-[400px] border-l-2 border-l-[#444746]" id="faq-10">
+                            <div class="flex items-start gap-3">
+                                <i class="ph-fill ph-chat-circle-question text-[#FB923C] text-lg mt-0.5 shrink-0"></i>
+                                <div>
+                                    <h4 class="font-medium text-sm text-gray-100 mb-1">10. Bisa diakses via HP / Smartphone?</h4>
+                                    <p class="text-xs text-muted leading-relaxed">Ya, bisa. SRIKANDI berbasis web. Anda bisa membukanya menggunakan browser HP (seperti Chrome atau Safari) di mana saja selagi ada internet.</p>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <!-- BRANCH 3: SEKRETARIS / TATA USAHA -->
-                    <div class="flex flex-row items-center gap-16 md:gap-24">
-                        <div class="relative">
-                            <div class="node-card role-sekretaris p-5 w-72" id="role-3">
-                                <div class="flex items-center gap-3 mb-2">
-                                    <i class="ph-fill ph-users-three text-[#FEE266] text-xl"></i>
-                                    <span class="text-xs font-bold tracking-wider text-[#FEE266] uppercase">Aktor 3</span>
-                                </div>
-                                <h3 class="font-medium text-lg leading-tight">Sekretaris Srikandi / Tata Usaha</h3>
-                                <p class="text-xs text-muted mt-3 pt-3 border-t border-[#444746]">Mengelola administrasi dan pendistribusian surat secara sistem.</p>
-                            </div>
-                        </div>
-                        <!-- Empty column structure to maintain flex alignment -->
-                        <div class="flex flex-col gap-5 w-80 opacity-0 pointer-events-none hidden md:block" id="task-3-placeholder"></div>
-                    </div>
-
-                    <!-- BRANCH 4: DIREKTUR -->
-                    <div class="flex flex-row items-center gap-16 md:gap-24">
-                        <div class="relative">
-                            <div class="node-card role-direktur p-5 w-72" id="role-4">
-                                <div class="flex items-center gap-3 mb-2">
-                                    <i class="ph-fill ph-user-circle-gear text-[#F2B8B5] text-xl"></i>
-                                    <span class="text-xs font-bold tracking-wider text-[#F2B8B5] uppercase">Aktor 4</span>
-                                </div>
-                                <h3 class="font-medium text-lg leading-tight">Direktur</h3>
-                            </div>
-                            <!-- Tombol Toggle Role 4 -->
-                            <button class="toggle-btn absolute -right-4 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-[#2D2E30] border-2 border-[#131314] hover:bg-[#F2B8B5] hover:text-[#131314] text-[#C4C7C5] flex items-center justify-center z-20 cursor-pointer shadow-md transition-all duration-200" data-target="tasks-4">
-                                <i class="ph-bold ph-plus text-sm transition-transform duration-200"></i>
-                            </button>
-                        </div>
-                        
-                        <!-- Tasks for Branch 4 -->
-                        <div class="flex flex-col gap-5 hidden" id="tasks-4">
-                            <div class="node-card p-4 w-80 border-l-2 border-l-[#444746]" id="task-4a">
-                                <div class="flex items-start gap-3">
-                                    <i class="ph ph-pen-nib text-[#F2B8B5] text-lg mt-0.5"></i>
-                                    <div>
-                                        <h4 class="font-medium text-sm text-gray-100 mb-1">4.1 Menandatangani Surat</h4>
-                                        <p class="text-xs text-muted leading-relaxed">Melakukan penandatanganan elektronik pada surat keluar yang telah diverifikasi.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="node-card p-4 w-80 border-l-2 border-l-[#444746]" id="task-4b">
-                                <div class="flex items-start gap-3">
-                                    <i class="ph ph-envelope-open text-[#F2B8B5] text-lg mt-0.5"></i>
-                                    <div>
-                                        <h4 class="font-medium text-sm text-gray-100 mb-1">4.2 Disposisi Surat Masuk</h4>
-                                        <p class="text-xs text-muted leading-relaxed">Menerima surat masuk dari eksternal dan mendisposisikan ke unit/pejabat di bawahnya.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
+
             </div>
         </div>
     </main>
@@ -329,27 +449,40 @@
     <script>
         // Mindmap Connection Logic
         const connections = [
+            // Koneksi Horizontal (Cabang Kanan)
             { from: 'root', to: 'role-1', baseColor: '#444746', hoverColor: '#A8C7FA' },
             { from: 'root', to: 'role-2', baseColor: '#444746', hoverColor: '#6DD58C' },
             { from: 'root', to: 'role-3', baseColor: '#444746', hoverColor: '#FEE266' },
             { from: 'root', to: 'role-4', baseColor: '#444746', hoverColor: '#F2B8B5' },
             
+            // Koneksi Vertikal (Cabang Bawah untuk FAQ)
+            { from: 'root', to: 'role-faq', baseColor: '#444746', hoverColor: '#FB923C', dir: 'vertical' },
+            
+            // Sub-nodes Roles
             { from: 'role-1', to: 'task-1a', baseColor: '#444746', hoverColor: '#A8C7FA' },
             { from: 'role-1', to: 'task-1b', baseColor: '#444746', hoverColor: '#A8C7FA' },
-            
             { from: 'role-2', to: 'task-2a', baseColor: '#444746', hoverColor: '#6DD58C' },
             { from: 'role-2', to: 'task-2b', baseColor: '#444746', hoverColor: '#6DD58C' },
-            
             { from: 'role-4', to: 'task-4a', baseColor: '#444746', hoverColor: '#F2B8B5' },
             { from: 'role-4', to: 'task-4b', baseColor: '#444746', hoverColor: '#F2B8B5' },
 
-            // Sub-nodes Connections
+            // Sub-nodes Videos & Link
             { from: 'task-1a', to: 'vid-1a', baseColor: '#444746', hoverColor: '#ef4444' },
             { from: 'task-1b', to: 'vid-1b', baseColor: '#444746', hoverColor: '#ef4444' },
-            
-            // Task 2.a Connections
-            { from: 'task-2a', to: 'vid-2a1', baseColor: '#444746', hoverColor: '#ef4444' }, // Red for YouTube
-            { from: 'task-2a', to: 'link-2a2', baseColor: '#444746', hoverColor: '#60a5fa' }, // Blue for Link Template
+            { from: 'task-2a', to: 'vid-2a1', baseColor: '#444746', hoverColor: '#ef4444' }, 
+            { from: 'task-2a', to: 'link-2a2', baseColor: '#444746', hoverColor: '#60a5fa' },
+
+            // Sub-nodes FAQ
+            { from: 'role-faq', to: 'faq-1', baseColor: '#444746', hoverColor: '#FB923C' },
+            { from: 'role-faq', to: 'faq-2', baseColor: '#444746', hoverColor: '#FB923C' },
+            { from: 'role-faq', to: 'faq-3', baseColor: '#444746', hoverColor: '#FB923C' },
+            { from: 'role-faq', to: 'faq-4', baseColor: '#444746', hoverColor: '#FB923C' },
+            { from: 'role-faq', to: 'faq-5', baseColor: '#444746', hoverColor: '#FB923C' },
+            { from: 'role-faq', to: 'faq-6', baseColor: '#444746', hoverColor: '#FB923C' },
+            { from: 'role-faq', to: 'faq-7', baseColor: '#444746', hoverColor: '#FB923C' },
+            { from: 'role-faq', to: 'faq-8', baseColor: '#444746', hoverColor: '#FB923C' },
+            { from: 'role-faq', to: 'faq-9', baseColor: '#444746', hoverColor: '#FB923C' },
+            { from: 'role-faq', to: 'faq-10', baseColor: '#444746', hoverColor: '#FB923C' }
         ];
 
         let scale = 1;
@@ -395,18 +528,33 @@
                 const toRect = toEl.getBoundingClientRect();
 
                 // Hitung posisi relatif terhadap pembungkus (wrapper) dan disesuaikan dengan skala zoom saat ini
-                const startX = (fromRect.right - wrapperRect.left) / scale;
-                const startY = (fromRect.top + (fromRect.height / 2) - wrapperRect.top) / scale;
-                
-                const endX = (toRect.left - wrapperRect.left) / scale;
-                const endY = (toRect.top + (toRect.height / 2) - wrapperRect.top) / scale;
+                let startX, startY, endX, endY, cp1X, cp1Y, cp2X, cp2Y;
 
-                // Bezier curve calculations for smooth "S" shape
-                const offset = Math.max(50, (endX - startX) / 2);
-                const cp1X = startX + offset;
-                const cp1Y = startY;
-                const cp2X = endX - offset;
-                const cp2Y = endY;
+                if (conn.dir === 'vertical') {
+                    // Garis dari bawah ke atas (Top-to-Bottom)
+                    startX = (fromRect.left + (fromRect.width / 2) - wrapperRect.left) / scale;
+                    startY = (fromRect.bottom - wrapperRect.top) / scale;
+                    endX = (toRect.left + (toRect.width / 2) - wrapperRect.left) / scale;
+                    endY = (toRect.top - wrapperRect.top) / scale;
+
+                    const offset = Math.max(50, (endY - startY) / 2);
+                    cp1X = startX;
+                    cp1Y = startY + offset;
+                    cp2X = endX;
+                    cp2Y = endY - offset;
+                } else {
+                    // Garis horizontal standar (Left-to-Right)
+                    startX = (fromRect.right - wrapperRect.left) / scale;
+                    startY = (fromRect.top + (fromRect.height / 2) - wrapperRect.top) / scale;
+                    endX = (toRect.left - wrapperRect.left) / scale;
+                    endY = (toRect.top + (toRect.height / 2) - wrapperRect.top) / scale;
+
+                    const offset = Math.max(50, (endX - startX) / 2);
+                    cp1X = startX + offset;
+                    cp1Y = startY;
+                    cp2X = endX - offset;
+                    cp2Y = endY;
+                }
 
                 // Create SVG Path element
                 const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
@@ -505,7 +653,7 @@
         // Fitur Pan / Geser (Mouse Drag)
         viewport.addEventListener('mousedown', (e) => {
             // Abaikan aksi drag jika sedang menekan kartu atau tombol toggle
-            if(e.target.closest('.node-card') || e.target.closest('.toggle-btn')) return;
+            if(e.target.closest('.node-card') || e.target.closest('.toggle-btn') || e.target.tagName.toLowerCase() === 'a') return;
             
             isDown = true;
             viewport.classList.add('active:cursor-grabbing');
@@ -539,7 +687,7 @@
 
         viewport.addEventListener('touchstart', (e) => {
             // Abaikan aksi sentuh jika sedang menekan kartu atau tombol toggle
-            if(e.target.closest('.node-card') || e.target.closest('.toggle-btn')) return;
+            if(e.target.closest('.node-card') || e.target.closest('.toggle-btn') || e.target.tagName.toLowerCase() === 'a') return;
             
             if (e.touches.length === 1) {
                 // Sentuhan 1 jari: Mode Geser (Pan)
@@ -602,7 +750,7 @@
             }
         });
 
-        // Interaksi Expand / Collapse (Tampil / Sembunyi)
+        // Interaksi Expand / Collapse (Tampil / Sembunyi) Mindmap
         document.querySelectorAll('.toggle-btn').forEach(btn => {
             btn.addEventListener('click', function(e) {
                 e.stopPropagation(); // Mencegah memicu fungsi drag
